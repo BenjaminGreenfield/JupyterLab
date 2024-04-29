@@ -6,7 +6,7 @@ import io
 app = Flask(__name__)
 
 def get_vnc_screen():
-#    client = api.connect('192.168.1.181::5900', password='54') boop
+#    client = api.connect('192.168.1.181::5900', password='54') boopy doop
     client = api.connect('vnc://192.168.1.181:5900', password='5424978168')
     while True:
         # Capture the screen as an image object, save to a buffer, and yield it
