@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  jupyterlab:
+    build: .
+    ports:
+      - "8888:8888"  # Port for Jupyter Lab
+      - "2222:22"    # Port for SSH, mapping host's 2222 to container's 22
+      - "5000:5000"
+    volumes:
+      - ../app:/app  # Optional: Mount a directory from the host to the container for persistent storage
+      - .:/docker  # Optional: Mount a directory from the host to the container for persistent storage
+    environment:
+      - TZ=America/New_York  # Optional: Set the timezone or other environment variables
+
+networks:
+  default:
+    driver: bridge
+
