@@ -1,0 +1,4 @@
+Flask==3.0.3
+Pillow==10.3.0
+vncdotool==1.2.0
+xlib==0.21
