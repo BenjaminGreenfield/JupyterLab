@@ -1,12 +1,12 @@
 import subprocess
 import io
 import time
-import cv2
+#import cv2
 
 from PIL import Image
 from flask import Flask, Response
 from Xlib import display, X
-import numpy as np
+#import numpy as np
 
 app = Flask(__name__)
 
@@ -16,7 +16,7 @@ def get_xvfb_screen():
     screen = dsp.screen()
     depth = screen.root_depth
     print(f"Depth of the screen: {depth} bits")
-
+    
     while True:
         geom = root.get_geometry()
         width = geom.width
@@ -26,22 +26,8 @@ def get_xvfb_screen():
         raw = root.get_image(0, 0, width, height, X.ZPixmap, 0xffffffff)
 
         if depth == 16:
-            img_data = np.frombuffer(raw.data, dtype=np.uint16).reshape(height, width)
-            # Extract each color component
-            r = (img_data & 0xF800) >> 8
-            g = (img_data & 0x07E0) >> 3
-            b = (img_data & 0x001F) << 3
-            # Scale the color components to 8-bits
-            r = (r * 255 // 31).astype(np.uint8)
-            g = (g * 255 // 63).astype(np.uint8)
-            b = (b * 255 // 31).astype(np.uint8)
-            # Stack the channels into an RGB image
-            img_rgb888 = np.stack((r, g, b), axis=-1)
-            image = Image.fromarray(img_rgb888, 'RGB')
-        else:
-            print("Unsupported depth")
-            continue
-
+            image = Image.frombytes("RGB", (width, height), raw.data, "raw", "RGB;16")
+        
         buffer = io.BytesIO()
         image.save(buffer, 'JPEG', quality=50)
         screen_data = buffer.getvalue()
