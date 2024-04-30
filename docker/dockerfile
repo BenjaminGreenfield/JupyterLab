@@ -2,9 +2,9 @@
 #FROM python:3.10-slim
 FROM --platform=linux/amd64 python:3.10-slim
 
-# Install Jupyter Lab and OpenSSH server
+# Install Jupyter Lab and OpenSSH server and others
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends openssh-server && \
+    apt-get install -y --no-install-recommends openssh-server xvfb fluxbox xterm supervisor && \
     pip install --no-cache-dir jupyterlab
 
 # Set up SSH directory and permissions
@@ -12,6 +12,7 @@ RUN mkdir /var/run/sshd && \
     echo 'root:root' | chpasswd && \
     sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config && \
     sed 's@session\s*required\s*pam_loginuid.so@session optional pam_loginuid.so@g' -i /etc/pam.d/sshd
+
 
 # Expose the SSH and Jupyter ports
 EXPOSE 22 8888
@@ -29,6 +30,11 @@ RUN ls -la
 
 
 WORKDIR /app
+
+COPY . /app
+
+# Install the requirements for the python app
+RUN pip install --no-cache -r requirements.txt
 
 #RUN echo about to ls
 #RUN ls -la
