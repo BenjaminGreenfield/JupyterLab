@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var socket = io();
+
+    document.addEventListener('mousemove', function(event) {
+        socket.emit('mousemove', {x: event.clientX, y: event.clientY});
+    });
+
+    document.addEventListener('keydown', function(event) {
+        // Prevent default action to stop normal behavior like scrolling
+        event.preventDefault();
+
+        if( event.key == 'p' ) {
+            socket.emit('keypress', {key: "Return"});
+        } else {
+            socket.emit('keypress', {key: event.key});
+        }
+    });
+});
+</script>
+</head>
+<body>
+<img src="/video_feed" />
+</body>
+</html>
+

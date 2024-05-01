@@ -24,20 +24,24 @@ def video_feed():
     return Response(get_vnc_screen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+#@app.route('/')
+#def index():
+#    # HTML page to display the live video stream
+#    return '''
+#    <html>
+#    <head>
+#        <title>VNC Viewer Stream</title>
+#    </head>
+#    <body>
+#        <h1>VNC Viewer Stream</h1>
+#        <img src="/video_feed" />
+#    </body>
+#    </html>
+#    '''
+
 @app.route('/')
 def index():
-    # HTML page to display the live video stream
-    return '''
-    <html>
-    <head>
-        <title>VNC Viewer Stream</title>
-    </head>
-    <body>
-        <h1>VNC Viewer Stream</h1>
-        <img src="/video_feed" />
-    </body>
-    </html>
-    '''
+    return render_template('index.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, threaded=True)
